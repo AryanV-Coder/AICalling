@@ -2,3 +2,5 @@
 *.env
 *improvements.txt
 *__pycache__
+*.mp3
+*.wav

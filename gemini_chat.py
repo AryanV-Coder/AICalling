@@ -10,7 +10,7 @@ history = [
         "parts": [
             {
                 "text": '''You are My AI assistant. You will be talking to me like a human, like Iron Man's Jarvis. 
-                           Remember you are talking on a call.'''
+                           Remember you are talking on a call, answer in maximum of 4 lines.'''
             }
         ]
     }
