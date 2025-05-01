@@ -51,10 +51,10 @@ def process_recording():
         audio_file_url = text_to_speech(ai_reply)
         print("✅ [TTS URL]", audio_file_url)
 
-        # ✅ Ensure audio URL is reachable
-        head_response = requests.head(audio_file_url, timeout=3)
-        if head_response.status_code != 200:
-            raise Exception(f"TTS file not accessible: HTTP {head_response.status_code}")
+        # # ✅ Ensure audio URL is reachable
+        # head_response = requests.head(audio_file_url, timeout=3)
+        # if head_response.status_code != 200:
+        #     raise Exception(f"TTS file not accessible: HTTP {head_response.status_code}")
 
         # ✅ Respond with audio and loop
         twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
