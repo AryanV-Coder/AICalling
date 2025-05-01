@@ -87,7 +87,7 @@ def call_user(user_number):
     call = client.calls.create(
         to="+91"+user_number,
         from_=twilio_number,
-        url=os.getenv('NGROK_URL') + '/voice'
+        url='https://aicalling-jd08.onrender.com/voice'
     )
     return call.sid
 

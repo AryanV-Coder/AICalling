@@ -6,3 +6,5 @@ SpeechRecognition
 gTTS
 requests
 pydub
+ffmpeg-python
+gunicorn==21.2.0
