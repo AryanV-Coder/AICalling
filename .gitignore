@@ -1,0 +1,4 @@
+*venv
+*.env
+*improvements.txt
+*__pycache__
