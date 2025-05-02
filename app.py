@@ -90,7 +90,7 @@ def call_user(user_number):
     call = client.calls.create(
         to="+91"+user_number,
         from_=twilio_number,
-        url=f"{os.getenv('NGROK_URL')}/voice"
+        url=f"{os.getenv('RENDER_URL')}/voice"
     )
     return call.sid
 
