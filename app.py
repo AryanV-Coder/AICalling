@@ -45,7 +45,10 @@ def process_recording():
         text = utils.transcribe_audio(audio_path)
         print("✅ [Transcribed Text]", text)
 
-        ai_reply = chat_with_gemini(text)
+        if text == "Unknown":
+            ai_reply = "Sorry I could not understand !! Kindly speak again !!"
+        else:
+            ai_reply = chat_with_gemini(text)
         print("✅ [Gemini Reply]", ai_reply)
 
         audio_file_url = text_to_speech(ai_reply)
@@ -87,7 +90,7 @@ def call_user(user_number):
     call = client.calls.create(
         to="+91"+user_number,
         from_=twilio_number,
-        url='https://aicalling-ezst.onrender.com/voice'
+        url=f"{os.getenv('NGROK_URL')}/voice"
     )
     return call.sid
 
