@@ -18,7 +18,7 @@ def download_audio(recording_url):
         time.sleep(2)  # Give Twilio time to finalize recording
 
         # ✅ Download with Basic Auth
-        response = requests.get(recording_url + ".wav", auth=(twilio_sid, twilio_token))
+        response = requests.get(recording_url, auth=(twilio_sid, twilio_token))
         if response.status_code != 200:
             raise Exception(f"Failed to download recording. Status code: {response.status_code}")
         
