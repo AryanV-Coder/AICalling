@@ -14,29 +14,30 @@ def download_audio(recording_url):
     twilio_wav = "static/audio/twilio_original.wav"
     processed_wav = "static/audio/recording.wav"
 
-    try:
-        time.sleep(2)  # Give Twilio time to finalize recording
+    while (True):
+        try:
+            time.sleep(2)  # Give Twilio time to finalize recording
 
-        # ✅ Download with Basic Auth
-        response = requests.get(recording_url, auth=(twilio_sid, twilio_token))
-        if response.status_code != 200:
-            raise Exception(f"Failed to download recording. Status code: {response.status_code}")
-        
-        with open(twilio_wav, 'wb') as f:
-            f.write(response.content)
-        print("[✅] Downloaded Twilio recording")
+            # ✅ Download with Basic Auth
+            response = requests.get(recording_url, auth=(twilio_sid, twilio_token))
+            if response.status_code != 200:
+                raise Exception(f"Failed to download recording. Status code: {response.status_code}")
+            
+            with open(twilio_wav, 'wb') as f:
+                f.write(response.content)
+            print("[✅] Downloaded Twilio recording")
 
-        # 🎧 Convert to 16kHz mono WAV for transcription
-        audio = AudioSegment.from_file(twilio_wav, format="wav")
-        audio = audio.set_channels(1).set_frame_rate(16000)
-        audio.export(processed_wav, format="wav")
-        print("[✅] Converted audio to proper format")
+            # 🎧 Convert to 16kHz mono WAV for transcription
+            audio = AudioSegment.from_file(twilio_wav, format="wav")
+            audio = audio.set_channels(1).set_frame_rate(16000)
+            audio.export(processed_wav, format="wav")
+            print("[✅] Converted audio to proper format")
 
-        return processed_wav
+            return processed_wav
 
-    except Exception as e:
-        print("🔥 ERROR in download_audio():", e)
-        return None
+        except Exception as e:
+            print("🔥 ERROR in download_audio():", e)
+            print("🔥 Trying to downlaod audio again !!")
 
 
 def transcribe_audio(audio_path):
@@ -46,5 +47,5 @@ def transcribe_audio(audio_path):
     try:
         text = recognizer.recognize_google(audio_data)
     except sr.UnknownValueError:
-        text = "Sorry, I could not understand."
+        text = "Unknown"
     return text
