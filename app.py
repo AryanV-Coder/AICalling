@@ -7,6 +7,7 @@ from twilio.rest import Client
 import os
 from dotenv import load_dotenv
 import requests
+import urllib.parse
 
 load_dotenv()
 
@@ -19,7 +20,8 @@ def index():
 @app.route('/call', methods=['POST'])
 def call():
     phone_number = request.form['phone_number']
-    call_user(phone_number)
+    message = request.form['message']
+    call_user(phone_number,message)
     return redirect('/')
 
 @app.route('/voice', methods=['POST'])
@@ -81,18 +83,46 @@ def process_recording():
             status=200
         )
 
-def call_user(user_number):
+@app.route('/send-message', methods=['POST'])
+def send_message():
+
+    user_message = request.args.get('message', '')
+    decoded_message = urllib.parse.unquote(user_message)
+    print(decoded_message)
+
+    return Response(
+        f"""<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say voice="Polly.Matthew">{decoded_message}</Say>
+</Response>""",
+        mimetype='text/xml'
+    )
+
+def call_user(user_number,user_message):
     account_sid = os.getenv('TWILIO_ACCOUNT_SID')
     auth_token = os.getenv('TWILIO_AUTH_TOKEN')
     twilio_number = os.getenv('TWILIO_NUMBER')
-
     client = Client(account_sid, auth_token)
-    call = client.calls.create(
-        to="+91"+user_number,
-        from_=twilio_number,
-        url=f"{os.getenv('RENDER_URL')}/voice"
-    )
-    return call.sid
+
+    if user_message.strip() == "":
+        call = client.calls.create(
+            to="+91"+user_number,
+            from_=twilio_number,
+            url=f"{os.getenv('RENDER_URL')}/voice"
+        )
+        return call.sid
+    
+    else :
+        # URL encode the message to handle special characters
+        print(user_message)
+        encoded_message = urllib.parse.quote(user_message)
+        print(encoded_message)
+        call = client.calls.create(
+                to="+91"+user_number,
+                from_=twilio_number,
+                url=f"{os.getenv('RENDER_URL')}/send-message?message={encoded_message}"
+            )
+        return call.sid
 
 if __name__ == "__main__":
     app.run(port=5000,debug = True)
