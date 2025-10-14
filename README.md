@@ -4,6 +4,7 @@ An AI assistant that talks to you over a phone call using Twilio, Gemini API, an
 
 ## Features
 - Make call from website
+- Send instant voice messages: Type a message on the website, and it will be read out to the recipient over a phone call. Ideal for urgent messages that can't be missed.
 - Record user's voice
 - AI understands question and replies back via voice
 - Continuous conversation loop
