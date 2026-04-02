@@ -21,7 +21,7 @@ def chat_with_gemini(user_input):
     global history
 
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-    model = genai.GenerativeModel('gemini-2.0-flash-lite')
+    model = genai.GenerativeModel('gemini-2.5-flash-lite')
     chat = model.start_chat(history=history)
     response = chat.send_message(user_input,stream=True)
     response.resolve() # Ensure the response is fully generated
